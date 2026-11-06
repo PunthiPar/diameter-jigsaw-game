@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diameter: Muscle Jigsaw Adventure 🧬✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Mali:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f6f0ff;
+            --card-bg: #ffffff;
+            --primary: #9d4edf;
+            --primary-light: #e0aaff;
+            --pink-accent: #ff85a1;
+            --yellow-star: #ffb703;
+            --text-color: #4a4e69;
+            --correct-green: #52b788;
+            --slot-border: #c77dff;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Mali', 'Fredoka', cursive, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .mascot-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .mascot {
+            width: 55px;
+            height: 55px;
+            background: var(--pink-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(255, 133, 161, 0.4);
+            font-size: 28px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 0px #fff;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #7b2cbf;
+            margin-top: 4px;
+        }
+
+        /* Stage Navigator & Stats */
+        .game-bar {
+            background: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(157, 78, 221, 0.15);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: var(--bg-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Game Main Container */
+        .game-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 3px solid #f0e6ff;
+        }
+
+        .stage-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .stage-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .stage-desc {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Board & Puzzle Area */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .puzzle-board, .pieces-pool {
+            background: #faf7ff;
+            border-radius: 18px;
+            padding: 18px;
+            border: 2px dashed var(--slot-border);
+            min-height: 340px;
+        }
+
+        .section-label {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        /* Jigsaw Slots & Pieces */
+        .slot-list, .pieces-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .jigsaw-slot {
+            background: #ffffff;
+            border: 2px dashed #d8b4fe;
+            border-radius: 14px;
+            padding: 10px 14px;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .jigsaw-slot.drag-over {
+            background: #f3e8ff;
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .slot-hint {
+            font-size: 0.85rem;
+            color: #a3a3a3;
+        }
+
+        .puzzle-piece {
+            background: linear-gradient(135deg, #e0aaff, #c77dff);
+            color: white;
+            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: grab;
+            box-shadow: 0 4px 8px rgba(157, 78, 221, 0.25);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .puzzle-piece:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+
+        .puzzle-piece.placed {
+            background: linear-gradient(135deg, #52b788, #74c69d);
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .piece-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        /* Win Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(157, 78, 221, 0.4);
+            transition: background 0.2s;
+        }
+
+        .btn-next:hover {
+            background: #7b2cbf;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="mascot-title">
+            <div class="mascot">🧬</div>
+            <h1>Diameter Jigsaw</h1>
+        </div>
+        <div class="subtitle">ไขรหัสโครงสร้างกล้ามเนื้อผ่านจิ๊กซอว์สุดน่ารัก! 💕</div>
+    </header>
+
+    <div class="game-bar">
+        <div class="badge" id="stage-indicator">ด่าน 1 / 3</div>
+        <div class="badge" id="score-indicator">⭐ คะแนน: 0</div>
+    </div>
+
+    <div class="game-container">
+        <div class="stage-header">
+            <div class="stage-title" id="stage-title">ด่านที่ 1: ลำดับชั้นโครงสร้างกล้ามเนื้อลาย</div>
+            <div class="stage-desc" id="stage-desc">ลากชิ้นส่วนกล้ามเนื้อไปวางเรียงลำดับจากใหญ่สุดไปเล็กที่สุด (Outside to Inside)</div>
+        </div>
+
+        <div class="workspace">
+            <div class="puzzle-board">
+                <div class="section-label">🧩 วางชิ้นส่วนจิ๊กซอว์ที่นี่</div>
+                <div class="slot-list" id="slot-list"></div>
+            </div>
+            
+            <div class="pieces-pool">
+                <div class="section-label">🎁 ชิ้นส่วนที่เลือกได้</div>
+                <div class="pieces-list" id="pieces-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="win-modal">
+        <div class="modal">
+            <h2>🎉 เก่งมากเลย! ✨</h2>
+            <p id="modal-msg">คุณประกอบจิ๊กซอว์โครงสร้างกล้ามเนื้อได้ถูกต้องสมบูรณ์!</p>
+            <div style="font-size: 2.5rem; margin: 10px 0;">⭐⭐⭐</div>
+            <button class="btn-next" onclick="nextStage()">ลุยด่านต่อไป 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        // ข้อมูลเกมอ้างอิงตามเนื้อหา PDF (Skeletal, Sarcomere, Muscle types)
+        const stages = [
+            {
+                title: "ด่านที่ 1: ลำดับชั้นโครงสร้างกล้ามเนื้อลาย (Hierarchy)",
+                desc: "ลากชิ้นส่วนเนื้อเยื่อ/โครงสร้างเรียงจากชั้นนอกสุดไปยังระดับโมเลกุล",
+                items: [
+                    { id: "p1", name: "1. Epimysium", desc: "เยื่อหุ้มมัดกล้ามเนื้อชั้นนอกสุด[cite: 2, 4]", icon: "🥩" },
+                    { id: "p2", name: "2. Perimysium & Fascicle", desc: "เยื่อหุ้มมัดย่อยกล้ามเนื้อ (ฟาสซิเคิล)[cite: 2, 4]", icon: "📦" },
+                    { id: "p3", name: "3. Endomysium & Muscle Fiber", desc: "เยื่อหุ้มเส้นใยกล้ามเนื้อแต่ละเซลล์[cite: 2, 4]", icon: "🔬" },
+                    { id: "p4", name: "4. Myofibril", desc: "เส้นใยกล้ามเนื้อย่อยภายในเซลล์", icon: "🦯" },
+                    { id: "p5", name: "5. Sarcomere & Myofilaments", desc: "หน่วยหดตัวและเส้นใยโปรตีน[cite: 3, 4]", icon: "⚡" }
+                ]
+            },
+            {
+                title: "ด่านที่ 2: โครงสร้างซาร์โคเมียร์ (Sarcomere Structure)",
+                desc: "จับคู่เส้นใยและขอบเขตโครงสร้างซาร์โคเมียร์ให้ถูกต้อง[cite: 3, 4]",
+                items: [
+                    { id: "s1", name: "Z Disc (แผ่น Z)", desc: "ขอบเขตหัวท้ายของซาร์โคเมียร์แต่ละหน่วย[cite: 3]", icon: "🏁" },
+                    { id: "s2", name: "Thick Filament (Myosin)", desc: "เส้นใยหนา มีส่วนหัวกลมจับ ATP[cite: 3, 4]", icon: "💪" },
+                    { id: "s3", name: "Thin Filament (Actin)", desc: "เส้นใยบาง ทำงานร่วมกับ Troponin/Tropomyosin[cite: 3, 4]", icon: "🎗️" },
+                    { id: "s4", name: "A Band & I Band", desc: "แถบทึบแสง (มีไมโอซิน) และแถบสว่าง (ไม่มีไมโอซิน)[cite: 3, 5]", icon: "🏁" }
+                ]
+            },
+            {
+                title: "ด่านที่ 3: เปรียบเทียบประเภทกล้ามเนื้อ (3 Muscle Types)",
+                desc: "ประกอบลักษณะเฉพาะของกล้ามเนื้อทั้ง 3 ชนิด",
+                items: [
+                    { id: "m1", name: "กล้ามเนื้อโครงร่าง (Skeletal)", desc: "หลายนิวเคลียส มีลาย ควบคุมได้ตามสั่ง[cite: 4, 6]", icon: "🏋️" },
+                    { id: "m2", name: "กล้ามเนื้อหัวใจ (Cardiac)", desc: "แตกแขนง มี Intercalated disc และ Gap junction[cite: 5, 6]", icon: "❤️" },
+                    { id: "m3", name: "กล้ามเนื้อเรียบ (Smooth)", desc: "รูปกระสวย ไม่มีลาย ใช้ Dense Bodies แทน Z-disc[cite: 5, 6]", icon: "🌊" }
+                ]
+            }
+        ];
+
+        let currentStage = 0;
+        let score = 0;
+        let completedCount = 0;
+
+        function initStage(stageIdx) {
+            const stage = stages[stageIdx];
+            document.getElementById('stage-indicator').innerText = `ด่าน ${stageIdx + 1} / ${stages.length}`;
+            document.getElementById('stage-title').innerText = stage.title;
+            document.getElementById('stage-desc').innerText = stage.desc;
+
+            const slotList = document.getElementById('slot-list');
+            const piecesList = document.getElementById('pieces-list');
+            
+            slotList.innerHTML = '';
+            piecesList.innerHTML = '';
+            completedCount = 0;
+
+            // สร้างช่องวาง Slot
+            stage.items.forEach((item, index) => {
+                const slot = document.createElement('div');
+                slot.className = 'jigsaw-slot';
+                slot.dataset.targetId = item.id;
+                slot.innerHTML = `<span class="slot-hint">📍 ${item.desc}</span>`;
+                
+                slot.addEventListener('dragover', handleDragOver);
+                slot.addEventListener('dragleave', handleDragLeave);
+                slot.addEventListener('drop', handleDrop);
+
+                slotList.appendChild(slot);
+            });
+
+            // สร้างชิ้นส่วน Puzzle (แบบสุ่มลำดับ)
+            const shuffled = [...stage.items].sort(() => Math.random() - 0.5);
+            shuffled.forEach(item => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.draggable = true;
+                piece.id = item.id;
+                piece.innerHTML = `<span><span class="piece-icon">${item.icon}</span>${item.name}</span> ✨`;
+                
+                piece.addEventListener('dragstart', handleDragStart);
+
+                piecesList.appendChild(piece);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const slot = e.currentTarget;
+            slot.classList.remove('drag-over');
+
+            const pieceId = e.dataTransfer.getData('text/plain');
+            const piece = document.getElementById(pieceId);
+
+            if (slot.dataset.targetId === pieceId && !slot.classList.contains('filled')) {
+                // วางถูกต้อง
+                slot.classList.add('filled');
+                slot.innerHTML = '';
+                piece.classList.add('placed');
+                piece.draggable = false;
+                slot.appendChild(piece);
+
+                playChimeSound();
+                score += 10;
+                completedCount++;
+                document.getElementById('score-indicator').innerText = `⭐ คะแนน: ${score}`;
+
+                // เช็คว่าจบด่านหรือยัง
+                if (completedCount === stages[currentStage].items.length) {
+                    setTimeout(showWinModal, 400);
+                }
+            }
+        }
+
+        function playChimeSound() {
+            // สร้างเสียงสั้นๆ ด้วย Web Audio API เพื่อความน่ารัก
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.2); // A5
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.2);
+            } catch(e){}
+        }
+
+        function showWinModal() {
+            const modal = document.getElementById('win-modal');
+            const msg = document.getElementById('modal-msg');
+            if (currentStage < stages.length - 1) {
+                msg.innerText = `คุณผ่านด่าน ${currentStage + 1} แล้ว! เก่งมากๆ เลย ✨`;
+            } else {
+                msg.innerText = `🏆 ยินดีด้วย! คุณพิชิตครบทุกชั้น Diameter Muscle Jigsaw เรียบร้อยแล้ว! ✨`;
+                document.querySelector('.btn-next').innerText = "เล่นใหม่อีกครั้ง 🔄";
+            }
+            modal.style.display = 'flex';
+        }
+
+        function nextStage() {
+            document.getElementById('win-modal').style.display = 'none';
+            if (currentStage < stages.length - 1) {
+                currentStage++;
+            } else {
+                currentStage = 0;
+                score = 0;
+                document.getElementById('score-indicator').innerText = `⭐ คะแนน: ${score}`;
+            }
+            initStage(currentStage);
+        }
+
+        // เริ่มต้นเกมที่ด่านแรก
+        initStage(0);
+    </script>
+</body>
+</html>
