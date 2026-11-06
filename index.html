@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diameter: Muscle Jigsaw Adventure 🧬✨</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Diameter: Muscle Anatomy Jigsaw 🧬✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Mali:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,8 +11,8 @@
             --card-bg: #ffffff;
             --primary: #9d4edf;
             --primary-light: #e0aaff;
-            --pink-accent: #ff85a1;
-            --yellow-star: #ffb703;
+            --accent-pink: #ff85a1;
+            --accent-yellow: #ffb703;
             --text-color: #4a4e69;
             --correct-green: #52b788;
             --slot-border: #c77dff;
@@ -21,6 +21,7 @@
         * {
             box-sizing: border-box;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
@@ -28,198 +29,245 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
         }
 
+        /* Top Bar & App Header */
         header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .mascot-title {
+            background: white;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(157, 78, 221, 0.1);
+            z-index: 10;
         }
 
-        .mascot {
-            width: 55px;
-            height: 55px;
-            background: var(--pink-accent);
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mascot-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--accent-pink);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(255, 133, 161, 0.4);
-            font-size: 28px;
-            animation: bounce 2s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 3px 8px rgba(255, 133, 161, 0.4);
         }
 
         h1 {
+            font-size: 1.2rem;
             color: var(--primary);
             margin: 0;
-            font-size: 2.2rem;
-            text-shadow: 2px 2px 0px #fff;
         }
 
-        .subtitle {
-            font-size: 0.95rem;
-            color: #7b2cbf;
-            margin-top: 4px;
-        }
-
-        /* Stage Navigator & Stats */
-        .game-bar {
-            background: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(157, 78, 221, 0.15);
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .badge {
-            background: var(--bg-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 700;
+        .btn-icon {
+            background: #f0e6ff;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             color: var(--primary);
-            font-size: 0.9rem;
-        }
-
-        /* Game Main Container */
-        .game-container {
-            width: 100%;
-            max-width: 900px;
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border: 3px solid #f0e6ff;
-        }
-
-        .stage-header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .stage-title {
-            font-size: 1.3rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .stage-desc {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        /* Board & Puzzle Area */
-        .workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .workspace {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .puzzle-board, .pieces-pool {
-            background: #faf7ff;
-            border-radius: 18px;
-            padding: 18px;
-            border: 2px dashed var(--slot-border);
-            min-height: 340px;
-        }
-
-        .section-label {
             font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 12px;
-            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Jigsaw Slots & Pieces */
-        .slot-list, .pieces-list {
+        /* Top Center Circular Timer/Counter Bar */
+        .status-circle-container {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+        }
+
+        .status-circle {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            border: 4px solid var(--primary-light);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
-        .jigsaw-slot {
-            background: #ffffff;
-            border: 2px dashed #d8b4fe;
-            border-radius: 14px;
-            padding: 10px 14px;
-            min-height: 52px;
+        .timer-text {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #555;
+            font-family: monospace;
+        }
+
+        .progress-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Main Game Screen (Anatomy Visual Board) */
+        .main-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 50px 15px 15px 15px;
+            background: radial-gradient(circle at center, #ffffff 0%, #f6f0ff 100%);
+        }
+
+        .stage-banner {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-light);
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .diagram-container {
+            width: 100%;
+            max-width: 450px;
+            height: 340px;
+            background: white;
+            border-radius: 20px;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 8px 25px rgba(157, 78, 221, 0.08);
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            transition: all 0.2s ease;
+            justify-content: center;
         }
 
-        .jigsaw-slot.drag-over {
+        .diagram-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Interactive Target Drop Slots */
+        .target-slot {
+            position: absolute;
+            min-width: 130px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px dashed var(--slot-border);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #777;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .target-slot.hovered {
             background: #f3e8ff;
             border-color: var(--primary);
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
-        .slot-hint {
-            font-size: 0.85rem;
-            color: #a3a3a3;
+        .target-slot.filled {
+            border-style: solid;
+            border-color: var(--correct-green);
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: bold;
         }
 
-        .puzzle-piece {
-            background: linear-gradient(135deg, #e0aaff, #c77dff);
-            color: white;
-            font-weight: 700;
-            padding: 10px 16px;
-            border-radius: 12px;
-            cursor: grab;
-            box-shadow: 0 4px 8px rgba(157, 78, 221, 0.25);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        /* Bottom Pieces Tray Drawer */
+        .bottom-tray {
+            height: 140px;
+            background: white;
+            border-top: 3px solid #ede4ff;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            padding: 10px 15px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tray-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
             justify-content: space-between;
         }
 
-        .puzzle-piece:active {
-            cursor: grabbing;
-            transform: scale(0.98);
+        .pieces-scroll-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 5px 2px 12px 2px;
+            scrollbar-width: thin;
         }
 
-        .puzzle-piece.placed {
-            background: linear-gradient(135deg, #52b788, #74c69d);
-            cursor: default;
-            box-shadow: none;
+        .piece-card {
+            min-width: 130px;
+            height: 75px;
+            background: linear-gradient(135deg, #e0aaff, #c77dff);
+            border-radius: 14px;
+            color: white;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: grab;
+            box-shadow: 0 4px 10px rgba(157, 78, 221, 0.3);
+            transition: transform 0.15s, box-shadow 0.15s;
+            flex-shrink: 0;
+        }
+
+        .piece-card:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .piece-card.selected {
+            outline: 3px solid var(--accent-yellow);
+            transform: translateY(-4px);
+        }
+
+        .piece-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            line-height: 1.1;
         }
 
         .piece-icon {
             font-size: 1.2rem;
-            margin-right: 8px;
+            margin-bottom: 2px;
         }
 
         /* Win Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.45);
             display: none;
             justify-content: center;
             align-items: center;
@@ -229,12 +277,12 @@
         .modal {
             background: white;
             border-radius: 24px;
-            padding: 30px;
+            padding: 25px 30px;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 360px;
+            width: 85%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            animation: popIn 0.3s ease;
         }
 
         @keyframes popIn {
@@ -246,231 +294,311 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 28px;
+            padding: 12px 30px;
             font-size: 1rem;
             font-family: inherit;
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
             margin-top: 15px;
-            box-shadow: 0 4px 10px rgba(157, 78, 221, 0.4);
-            transition: background 0.2s;
-        }
-
-        .btn-next:hover {
-            background: #7b2cbf;
+            box-shadow: 0 4px 12px rgba(157, 78, 221, 0.4);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="mascot-title">
-            <div class="mascot">🧬</div>
-            <h1>Diameter Jigsaw</h1>
+        <div class="header-title">
+            <div class="mascot-icon">🧬</div>
+            <h1>Diameter Games</h1>
         </div>
-        <div class="subtitle">ไขรหัสโครงสร้างกล้ามเนื้อผ่านจิ๊กซอว์สุดน่ารัก! 💕</div>
+        <button class="btn-icon" onclick="restartGame()">🔄</button>
     </header>
 
-    <div class="game-bar">
-        <div class="badge" id="stage-indicator">ด่าน 1 / 3</div>
-        <div class="badge" id="score-indicator">⭐ คะแนน: 0</div>
-    </div>
-
-    <div class="game-container">
-        <div class="stage-header">
-            <div class="stage-title" id="stage-title">ด่านที่ 1: ลำดับชั้นโครงสร้างกล้ามเนื้อลาย</div>
-            <div class="stage-desc" id="stage-desc">ลากชิ้นส่วนกล้ามเนื้อไปวางเรียงลำดับจากใหญ่สุดไปเล็กที่สุด (Outside to Inside)</div>
-        </div>
-
-        <div class="workspace">
-            <div class="puzzle-board">
-                <div class="section-label">🧩 วางชิ้นส่วนจิ๊กซอว์ที่นี่</div>
-                <div class="slot-list" id="slot-list"></div>
-            </div>
-            
-            <div class="pieces-pool">
-                <div class="section-label">🎁 ชิ้นส่วนที่เลือกได้</div>
-                <div class="pieces-list" id="pieces-list"></div>
-            </div>
+    <!-- Top Circle Timer / Counter -->
+    <div class="status-circle-container">
+        <div class="status-circle">
+            <div class="timer-text" id="timer-display">00'00"00</div>
+            <div class="progress-text" id="progress-display">0/5</div>
         </div>
     </div>
 
+    <!-- Main Visual Diagram Canvas -->
+    <main class="main-stage">
+        <div class="stage-banner" id="stage-banner">ด่านที่ 1: ลำดับชั้นเนื้อเยื่อกล้ามเนื้อลาย</div>
+        
+        <div class="diagram-container" id="diagram-container">
+            <!-- Dynamic SVG & Drop Slots will be rendered here -->
+        </div>
+    </main>
+
+    <!-- Bottom Pieces Drawer Tray -->
+    <footer class="bottom-tray">
+        <div class="tray-label">
+            <span>🧩 ชิ้นส่วนกล้ามเนื้อ (ลากหรือแตะเพื่อวาง)</span>
+            <span id="stage-count-label">Stage 1/3</span>
+        </div>
+        <div class="pieces-scroll-container" id="pieces-tray">
+            <!-- Pieces Cards -->
+        </div>
+    </footer>
+
+    <!-- Stage Victory Modal -->
     <div class="modal-overlay" id="win-modal">
         <div class="modal">
-            <h2>🎉 เก่งมากเลย! ✨</h2>
-            <p id="modal-msg">คุณประกอบจิ๊กซอว์โครงสร้างกล้ามเนื้อได้ถูกต้องสมบูรณ์!</p>
-            <div style="font-size: 2.5rem; margin: 10px 0;">⭐⭐⭐</div>
-            <button class="btn-next" onclick="nextStage()">ลุยด่านต่อไป 🚀</button>
+            <h2>🎉 สมบูรณ์แบบ! ✨</h2>
+            <p id="modal-desc">คุณประกอบโครงสร้างกล้ามเนื้อถูกต้องครบถ้วน!</p>
+            <div style="font-size: 2.2rem; margin: 10px 0;">⭐⭐⭐</div>
+            <button class="btn-next" onclick="nextStage()">ด่านต่อไป 🚀</button>
         </div>
     </div>
 
     <script>
-        // ข้อมูลเกมอ้างอิงตามเนื้อหา PDF (Skeletal, Sarcomere, Muscle types)
-        const stages = [
+        // ข้อมูลเกมตรงตามเอกสาร PDF
+        const stageData = [
             {
-                title: "ด่านที่ 1: ลำดับชั้นโครงสร้างกล้ามเนื้อลาย (Hierarchy)",
-                desc: "ลากชิ้นส่วนเนื้อเยื่อ/โครงสร้างเรียงจากชั้นนอกสุดไปยังระดับโมเลกุล",
+                title: "ด่านที่ 1: ลำดับชั้นกล้ามเนื้อลาย (Structural Hierarchy)",
+                svgType: "hierarchy",
                 items: [
-                    { id: "p1", name: "1. Epimysium", desc: "เยื่อหุ้มมัดกล้ามเนื้อชั้นนอกสุด[cite: 2, 4]", icon: "🥩" },
-                    { id: "p2", name: "2. Perimysium & Fascicle", desc: "เยื่อหุ้มมัดย่อยกล้ามเนื้อ (ฟาสซิเคิล)[cite: 2, 4]", icon: "📦" },
-                    { id: "p3", name: "3. Endomysium & Muscle Fiber", desc: "เยื่อหุ้มเส้นใยกล้ามเนื้อแต่ละเซลล์[cite: 2, 4]", icon: "🔬" },
-                    { id: "p4", name: "4. Myofibril", desc: "เส้นใยกล้ามเนื้อย่อยภายในเซลล์", icon: "🦯" },
-                    { id: "p5", name: "5. Sarcomere & Myofilaments", desc: "หน่วยหดตัวและเส้นใยโปรตีน[cite: 3, 4]", icon: "⚡" }
+                    { id: "p1", name: "Epimysium", desc: "หุ้มมัดกล้ามเนื้อชั้นนอกสุด", icon: "🥩", top: "15%", left: "5%" },
+                    { id: "p2", name: "Perimysium", desc: "หุ้มมัดย่อย (Fascicle)", icon: "📦", top: "32%", left: "60%" },
+                    { id: "p3", name: "Endomysium", desc: "หุ้มเส้นใยกล้ามเนื้อแต่ละเซลล์", icon: "🔬", top: "50%", left: "5%" },
+                    { id: "p4", name: "Myofibril", desc: "เส้นใยกล้ามเนื้อย่อย", icon: "🦯", top: "68%", left: "60%" },
+                    { id: "p5", name: "Sarcomere", desc: "หน่วยหดตัวซาร์โคเมียร์", icon: "⚡", top: "82%", left: "15%" }
                 ]
             },
             {
-                title: "ด่านที่ 2: โครงสร้างซาร์โคเมียร์ (Sarcomere Structure)",
-                desc: "จับคู่เส้นใยและขอบเขตโครงสร้างซาร์โคเมียร์ให้ถูกต้อง[cite: 3, 4]",
+                title: "ด่านที่ 2: โครงสร้างซาร์โคเมียร์ (Sarcomere)",
+                svgType: "sarcomere",
                 items: [
-                    { id: "s1", name: "Z Disc (แผ่น Z)", desc: "ขอบเขตหัวท้ายของซาร์โคเมียร์แต่ละหน่วย[cite: 3]", icon: "🏁" },
-                    { id: "s2", name: "Thick Filament (Myosin)", desc: "เส้นใยหนา มีส่วนหัวกลมจับ ATP[cite: 3, 4]", icon: "💪" },
-                    { id: "s3", name: "Thin Filament (Actin)", desc: "เส้นใยบาง ทำงานร่วมกับ Troponin/Tropomyosin[cite: 3, 4]", icon: "🎗️" },
-                    { id: "s4", name: "A Band & I Band", desc: "แถบทึบแสง (มีไมโอซิน) และแถบสว่าง (ไม่มีไมโอซิน)[cite: 3, 5]", icon: "🏁" }
+                    { id: "s1", name: "Z Disc (แผ่น Z)", desc: "ขอบเขตหัวท้ายซาร์โคเมียร์", icon: "🏁", top: "15%", left: "8%" },
+                    { id: "s2", name: "Thick Filament", desc: "เส้นใยหนา (Myosin)", icon: "💪", top: "25%", left: "55%" },
+                    { id: "s3", name: "Thin Filament", desc: "เส้นใยบาง (Actin)", icon: "🎗️", top: "58%", left: "8%" },
+                    { id: "s4", name: "A Band & I Band", desc: "แถบทึบแสง และแถบสว่าง", icon: "🏁", top: "75%", left: "55%" }
                 ]
             },
             {
-                title: "ด่านที่ 3: เปรียบเทียบประเภทกล้ามเนื้อ (3 Muscle Types)",
-                desc: "ประกอบลักษณะเฉพาะของกล้ามเนื้อทั้ง 3 ชนิด",
+                title: "ด่านที่ 3: ประเภทกล้ามเนื้อ (3 Muscle Types)",
+                svgType: "types",
                 items: [
-                    { id: "m1", name: "กล้ามเนื้อโครงร่าง (Skeletal)", desc: "หลายนิวเคลียส มีลาย ควบคุมได้ตามสั่ง[cite: 4, 6]", icon: "🏋️" },
-                    { id: "m2", name: "กล้ามเนื้อหัวใจ (Cardiac)", desc: "แตกแขนง มี Intercalated disc และ Gap junction[cite: 5, 6]", icon: "❤️" },
-                    { id: "m3", name: "กล้ามเนื้อเรียบ (Smooth)", desc: "รูปกระสวย ไม่มีลาย ใช้ Dense Bodies แทน Z-disc[cite: 5, 6]", icon: "🌊" }
+                    { id: "m1", name: "Skeletal Muscle", desc: "ทรงกระบอกยาว มีหลาย N", icon: "🏋️", top: "18%", left: "10%" },
+                    { id: "m2", name: "Cardiac Muscle", desc: "แตกแขนง มี Intercalated disc", icon: "❤️", top: "50%", left: "52%" },
+                    { id: "m3", name: "Smooth Muscle", desc: "รูปกระสวย มี Dense Bodies", icon: "🌊", top: "78%", left: "10%" }
                 ]
             }
         ];
 
-        let currentStage = 0;
-        let score = 0;
+        let currentStageIdx = 0;
+        let selectedPieceId = null;
         let completedCount = 0;
+        let timerSeconds = 0;
+        let timerInterval = null;
 
-        function initStage(stageIdx) {
-            const stage = stages[stageIdx];
-            document.getElementById('stage-indicator').innerText = `ด่าน ${stageIdx + 1} / ${stages.length}`;
-            document.getElementById('stage-title').innerText = stage.title;
-            document.getElementById('stage-desc').innerText = stage.desc;
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerSeconds = 0;
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+                const secs = String(timerSeconds % 60).padStart(2, '0');
+                const ms = String(Math.floor(Math.random() * 99)).padStart(2, '0');
+                document.getElementById('timer-display').innerText = `${mins}'${secs}"${ms}`;
+            }, 1000);
+        }
 
-            const slotList = document.getElementById('slot-list');
-            const piecesList = document.getElementById('pieces-list');
+        function loadStage(idx) {
+            const data = stageData[idx];
+            document.getElementById('stage-banner').innerText = data.title;
+            document.getElementById('stage-count-label').innerText = `Stage ${idx + 1}/${stageData.length}`;
+            document.getElementById('progress-display').innerText = `0/${data.items.length}`;
             
-            slotList.innerHTML = '';
-            piecesList.innerHTML = '';
             completedCount = 0;
+            selectedPieceId = null;
 
-            // สร้างช่องวาง Slot
-            stage.items.forEach((item, index) => {
+            const container = document.getElementById('diagram-container');
+            container.innerHTML = generateSVG(data.svgType);
+
+            // Render Target Slots on Diagram Canvas
+            data.items.forEach(item => {
                 const slot = document.createElement('div');
-                slot.className = 'jigsaw-slot';
-                slot.dataset.targetId = item.id;
-                slot.innerHTML = `<span class="slot-hint">📍 ${item.desc}</span>`;
-                
-                slot.addEventListener('dragover', handleDragOver);
-                slot.addEventListener('dragleave', handleDragLeave);
-                slot.addEventListener('drop', handleDrop);
+                slot.className = 'target-slot';
+                slot.style.top = item.top;
+                slot.style.left = item.left;
+                slot.dataset.id = item.id;
+                slot.innerText = `🎯 ${item.desc}`;
 
-                slotList.appendChild(slot);
+                // Drag & Drop Listeners
+                slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('hovered'); });
+                slot.addEventListener('dragleave', () => slot.classList.remove('hovered'));
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('hovered');
+                    const pieceId = e.dataTransfer.getData('text');
+                    checkPlacement(pieceId, slot);
+                });
+
+                // Tap/Click Listener (For Mobile)
+                slot.addEventListener('click', () => {
+                    if (selectedPieceId) {
+                        checkPlacement(selectedPieceId, slot);
+                    }
+                });
+
+                container.appendChild(slot);
             });
 
-            // สร้างชิ้นส่วน Puzzle (แบบสุ่มลำดับ)
-            const shuffled = [...stage.items].sort(() => Math.random() - 0.5);
+            // Render Bottom Pieces Drawer Tray
+            const tray = document.getElementById('pieces-tray');
+            tray.innerHTML = '';
+            
+            const shuffled = [...data.items].sort(() => Math.random() - 0.5);
             shuffled.forEach(item => {
-                const piece = document.createElement('div');
-                piece.className = 'puzzle-piece';
-                piece.draggable = true;
-                piece.id = item.id;
-                piece.innerHTML = `<span><span class="piece-icon">${item.icon}</span>${item.name}</span> ✨`;
-                
-                piece.addEventListener('dragstart', handleDragStart);
+                const card = document.createElement('div');
+                card.className = 'piece-card';
+                card.draggable = true;
+                card.id = `piece-${item.id}`;
+                card.dataset.id = item.id;
 
-                piecesList.appendChild(piece);
+                card.innerHTML = `
+                    <div class="piece-icon">${item.icon}</div>
+                    <div class="piece-name">${item.name}</div>
+                `;
+
+                card.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text', item.id);
+                });
+
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.piece-card').forEach(c => c.classList.remove('selected'));
+                    if (selectedPieceId === item.id) {
+                        selectedPieceId = null;
+                    } else {
+                        selectedPieceId = item.id;
+                        card.classList.add('selected');
+                    }
+                });
+
+                tray.appendChild(card);
             });
         }
 
-        function handleDragStart(e) {
-            e.dataTransfer.setData('text/plain', e.target.id);
-        }
+        function checkPlacement(pieceId, slotElement) {
+            if (slotElement.classList.contains('filled')) return;
 
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.currentTarget.classList.add('drag-over');
-        }
+            if (slotElement.dataset.id === pieceId) {
+                const itemData = stageData[currentStageIdx].items.find(i => i.id === pieceId);
+                slotElement.classList.add('filled');
+                slotElement.innerHTML = `✅ ${itemData.name}`;
 
-        function handleDragLeave(e) {
-            e.currentTarget.classList.remove('drag-over');
-        }
+                const card = document.getElementById(`piece-${pieceId}`);
+                if (card) card.style.opacity = '0.3';
+                if (card) card.style.pointerEvents = 'none';
 
-        function handleDrop(e) {
-            e.preventDefault();
-            const slot = e.currentTarget;
-            slot.classList.remove('drag-over');
+                selectedPieceId = null;
+                document.querySelectorAll('.piece-card').forEach(c => c.classList.remove('selected'));
 
-            const pieceId = e.dataTransfer.getData('text/plain');
-            const piece = document.getElementById(pieceId);
-
-            if (slot.dataset.targetId === pieceId && !slot.classList.contains('filled')) {
-                // วางถูกต้อง
-                slot.classList.add('filled');
-                slot.innerHTML = '';
-                piece.classList.add('placed');
-                piece.draggable = false;
-                slot.appendChild(piece);
-
-                playChimeSound();
-                score += 10;
                 completedCount++;
-                document.getElementById('score-indicator').innerText = `⭐ คะแนน: ${score}`;
+                const total = stageData[currentStageIdx].items.length;
+                document.getElementById('progress-display').innerText = `${completedCount}/${total}`;
 
-                // เช็คว่าจบด่านหรือยัง
-                if (completedCount === stages[currentStage].items.length) {
-                    setTimeout(showWinModal, 400);
+                playBeepSound();
+
+                if (completedCount === total) {
+                    setTimeout(showWinModal, 500);
                 }
             }
         }
 
-        function playChimeSound() {
-            // สร้างเสียงสั้นๆ ด้วย Web Audio API เพื่อความน่ารัก
+        function playBeepSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.2); // A5
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                osc.frequency.setValueAtTime(659.25, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
-                osc.stop(ctx.currentTime + 0.2);
+                osc.stop(ctx.currentTime + 0.15);
             } catch(e){}
         }
 
-        function showWinModal() {
-            const modal = document.getElementById('win-modal');
-            const msg = document.getElementById('modal-msg');
-            if (currentStage < stages.length - 1) {
-                msg.innerText = `คุณผ่านด่าน ${currentStage + 1} แล้ว! เก่งมากๆ เลย ✨`;
+        function generateSVG(type) {
+            // Cute Anatomy Diagrams in SVG format
+            if (type === 'hierarchy') {
+                return `
+                <svg class="diagram-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="mGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff85a1" />
+                            <stop offset="100%" stop-color="#ff4d6d" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Whole Muscle -->
+                    <path d="M 50 140 Q 150 70 250 140 Q 150 210 50 140 Z" fill="url(#mGrad)" opacity="0.8"/>
+                    <!-- Fascicle Cylinder -->
+                    <rect x="180" y="120" width="110" height="40" rx="10" fill="#e0aaff" opacity="0.9"/>
+                    <!-- Fiber -->
+                    <rect x="250" y="130" width="80" height="20" rx="6" fill="#c77dff"/>
+                    <!-- Myofibril -->
+                    <line x1="310" y1="140" x2="380" y2="140" stroke="#7b2cbf" stroke-width="6" stroke-dasharray="4"/>
+                </svg>`;
+            } else if (type === 'sarcomere') {
+                return `
+                <svg class="diagram-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Z Discs -->
+                    <line x1="50" y1="50" x2="50" y2="250" stroke="#7b2cbf" stroke-width="8" stroke-dasharray="8"/>
+                    <line x1="350" y1="50" x2="350" y2="250" stroke="#7b2cbf" stroke-width="8" stroke-dasharray="8"/>
+                    <!-- Thick Filaments (Myosin) -->
+                    <rect x="120" y="110" width="160" height="16" rx="8" fill="#ff4d6d"/>
+                    <rect x="120" y="170" width="160" height="16" rx="8" fill="#ff4d6d"/>
+                    <!-- Thin Filaments (Actin) -->
+                    <line x1="50" y1="90" x2="180" y2="90" stroke="#9d4edf" stroke-width="5"/>
+                    <line x1="50" y1="210" x2="180" y2="210" stroke="#9d4edf" stroke-width="5"/>
+                    <line x1="220" y1="90" x2="350" y2="90" stroke="#9d4edf" stroke-width="5"/>
+                    <line x1="220" y1="210" x2="350" y2="210" stroke="#9d4edf" stroke-width="5"/>
+                </svg>`;
             } else {
-                msg.innerText = `🏆 ยินดีด้วย! คุณพิชิตครบทุกชั้น Diameter Muscle Jigsaw เรียบร้อยแล้ว! ✨`;
-                document.querySelector('.btn-next').innerText = "เล่นใหม่อีกครั้ง 🔄";
+                return `
+                <svg class="diagram-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Skeletal Cell -->
+                    <rect x="40" y="40" width="140" height="40" rx="8" fill="#e0aaff" stroke="#9d4edf" stroke-width="2"/>
+                    <circle cx="70" cy="50" r="5" fill="#7b2cbf"/>
+                    <circle cx="120" cy="50" r="5" fill="#7b2cbf"/>
+                    <!-- Cardiac Cell -->
+                    <path d="M 220 120 L 320 120 L 340 150 L 240 150 Z" fill="#ffb703" opacity="0.8" stroke="#fb8500" stroke-width="2"/>
+                    <line x1="270" y1="120" x2="270" y2="150" stroke="#d4a373" stroke-width="4"/>
+                    <!-- Smooth Cell -->
+                    <path d="M 40 230 Q 110 200 180 230 Q 110 260 40 230 Z" fill="#ff85a1" stroke="#ff4d6d" stroke-width="2"/>
+                    <circle cx="110" cy="230" r="6" fill="#c77dff"/>
+                </svg>`;
             }
-            modal.style.display = 'flex';
+        }
+
+        function showWinModal() {
+            document.getElementById('win-modal').style.display = 'flex';
         }
 
         function nextStage() {
             document.getElementById('win-modal').style.display = 'none';
-            if (currentStage < stages.length - 1) {
-                currentStage++;
+            if (currentStageIdx < stageData.length - 1) {
+                currentStageIdx++;
             } else {
-                currentStage = 0;
-                score = 0;
-                document.getElementById('score-indicator').innerText = `⭐ คะแนน: ${score}`;
+                currentStageIdx = 0;
             }
-            initStage(currentStage);
+            loadStage(currentStageIdx);
         }
 
-        // เริ่มต้นเกมที่ด่านแรก
-        initStage(0);
+        function restartGame() {
+            currentStageIdx = 0;
+            startTimer();
+            loadStage(0);
+        }
+
+        // Initialize Game
+        startTimer();
+        loadStage(0);
     </script>
 </body>
 </html>
