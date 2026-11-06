@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Mali:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f6f0ff;
+            --bg-color: #fcf8ff;
             --card-bg: #ffffff;
             --primary: #9d4edf;
             --primary-light: #e0aaff;
@@ -36,21 +36,21 @@
             overflow: hidden;
         }
 
-        /* Top Bar & App Header */
+        /* App Header */
         header {
             background: white;
-            padding: 10px 16px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(157, 78, 221, 0.1);
+            box-shadow: 0 4px 15px rgba(157, 78, 221, 0.08);
             z-index: 10;
         }
 
         .header-title {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .mascot-icon {
@@ -86,22 +86,22 @@
             justify-content: center;
         }
 
-        /* Top Center Circular Timer/Counter Bar */
+        /* Top Center Circular Status Indicator */
         .status-circle-container {
             position: absolute;
-            top: 55px;
+            top: 52px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 15;
         }
 
         .status-circle {
-            width: 90px;
-            height: 90px;
+            width: 86px;
+            height: 86px;
             background: white;
             border-radius: 50%;
             border: 4px solid var(--primary-light);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            box-shadow: 0 6px 16px rgba(157, 78, 221, 0.15);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -110,9 +110,9 @@
         }
 
         .timer-text {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
-            color: #555;
+            color: #666;
             font-family: monospace;
         }
 
@@ -122,7 +122,7 @@
             color: var(--primary);
         }
 
-        /* Main Game Screen (Anatomy Visual Board) */
+        /* Main Game Screen */
         .main-stage {
             flex: 1;
             display: flex;
@@ -130,35 +130,42 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            padding: 50px 15px 15px 15px;
+            padding: 55px 15px 15px 15px;
             background: radial-gradient(circle at center, #ffffff 0%, #f6f0ff 100%);
         }
 
         .stage-banner {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 6px 18px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 20px;
             border-radius: 20px;
-            border: 1px solid var(--primary-light);
+            border: 1.5px solid var(--primary-light);
             font-size: 0.9rem;
             font-weight: bold;
             color: var(--primary);
-            margin-bottom: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .diagram-container {
             width: 100%;
-            max-width: 450px;
-            height: 340px;
+            max-width: 550px;
+            height: 360px;
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             border: 2px solid #e9d5ff;
-            box-shadow: 0 8px 25px rgba(157, 78, 221, 0.08);
+            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.1);
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .diagram-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 15px;
         }
 
         .diagram-svg {
@@ -170,22 +177,24 @@
         .target-slot {
             position: absolute;
             min-width: 130px;
-            padding: 6px 10px;
+            padding: 6px 12px;
             background: rgba(255, 255, 255, 0.92);
             border: 2px dashed var(--slot-border);
-            border-radius: 12px;
+            border-radius: 14px;
             text-align: center;
             font-size: 0.78rem;
-            color: #777;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            font-weight: 600;
+            color: #666;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             transition: all 0.2s ease;
             cursor: pointer;
+            backdrop-filter: blur(2px);
         }
 
         .target-slot.hovered {
             background: #f3e8ff;
             border-color: var(--primary);
-            transform: scale(1.05);
+            transform: scale(1.06);
         }
 
         .target-slot.filled {
@@ -198,11 +207,11 @@
 
         /* Bottom Pieces Tray Drawer */
         .bottom-tray {
-            height: 140px;
+            height: 145px;
             background: white;
             border-top: 3px solid #ede4ff;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-            padding: 10px 15px;
+            padding: 10px 18px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -220,13 +229,12 @@
             display: flex;
             gap: 12px;
             overflow-x: auto;
-            padding: 5px 2px 12px 2px;
-            scrollbar-width: thin;
+            padding: 4px 2px 10px 2px;
         }
 
         .piece-card {
-            min-width: 130px;
-            height: 75px;
+            min-width: 125px;
+            height: 72px;
             background: linear-gradient(135deg, #e0aaff, #c77dff);
             border-radius: 14px;
             color: white;
@@ -325,10 +333,10 @@
 
     <!-- Main Visual Diagram Canvas -->
     <main class="main-stage">
-        <div class="stage-banner" id="stage-banner">ด่านที่ 1: ลำดับชั้นเนื้อเยื่อกล้ามเนื้อลาย</div>
+        <div class="stage-banner" id="stage-banner">ด่านที่ 1: ลำดับชั้นเนื้อเยื่อกล้ามเนื้อลาย (Structural Hierarchy)</div>
         
         <div class="diagram-container" id="diagram-container">
-            <!-- Dynamic SVG & Drop Slots will be rendered here -->
+            <!-- Dynamic Image / SVG & Drop Slots -->
         </div>
     </main>
 
@@ -354,17 +362,17 @@
     </div>
 
     <script>
-        // ข้อมูลเกมตรงตามเอกสาร PDF
+        // ข้อมูลด่านและตำแหน่งชิ้นส่วนจิ๊กซอว์บนรูป Epimysium.jpg
         const stageData = [
             {
                 title: "ด่านที่ 1: ลำดับชั้นกล้ามเนื้อลาย (Structural Hierarchy)",
-                svgType: "hierarchy",
+                imageSrc: "Epimysium.jpg", // ใช้รูปภาพ Epimysium.jpg สำหรับด่านที่ 1
                 items: [
-                    { id: "p1", name: "Epimysium", desc: "หุ้มมัดกล้ามเนื้อชั้นนอกสุด", icon: "🥩", top: "15%", left: "5%" },
-                    { id: "p2", name: "Perimysium", desc: "หุ้มมัดย่อย (Fascicle)", icon: "📦", top: "32%", left: "60%" },
-                    { id: "p3", name: "Endomysium", desc: "หุ้มเส้นใยกล้ามเนื้อแต่ละเซลล์", icon: "🔬", top: "50%", left: "5%" },
-                    { id: "p4", name: "Myofibril", desc: "เส้นใยกล้ามเนื้อย่อย", icon: "🦯", top: "68%", left: "60%" },
-                    { id: "p5", name: "Sarcomere", desc: "หน่วยหดตัวซาร์โคเมียร์", icon: "⚡", top: "82%", left: "15%" }
+                    { id: "p1", name: "Epimysium", desc: "หุ้มมัดกล้ามเนื้อชั้นนอกสุด", icon: "🥩", top: "18%", left: "12%" },
+                    { id: "p2", name: "Perimysium", desc: "หุ้มมัดย่อย (Fascicle)", icon: "📦", top: "45%", left: "38%" },
+                    { id: "p3", name: "Endomysium", desc: "หุ้มเส้นใยกล้ามเนื้อแต่ละเส้น", icon: "🔬", top: "22%", left: "68%" },
+                    { id: "p4", name: "Myofibril", desc: "เส้นใยกล้ามเนื้อย่อยภายใน", icon: "🦯", top: "62%", left: "70%" },
+                    { id: "p5", name: "Sarcomere", desc: "หน่วยหดตัวซาร์โคเมียร์", icon: "⚡", top: "78%", left: "20%" }
                 ]
             },
             {
@@ -416,9 +424,20 @@
             selectedPieceId = null;
 
             const container = document.getElementById('diagram-container');
-            container.innerHTML = generateSVG(data.svgType);
+            container.innerHTML = '';
 
-            // Render Target Slots on Diagram Canvas
+            // แสดงผลรูปภาพ หรือ SVG ตามด่าน
+            if (data.imageSrc) {
+                const img = document.createElement('img');
+                img.src = data.imageSrc;
+                img.className = 'diagram-img';
+                img.alt = 'Muscle Anatomy Diagram';
+                container.appendChild(img);
+            } else {
+                container.innerHTML = generateSVG(data.svgType);
+            }
+
+            // แสดงจุดวางชิ้นส่วน (Target Drop Slots)
             data.items.forEach(item => {
                 const slot = document.createElement('div');
                 slot.className = 'target-slot';
@@ -427,7 +446,7 @@
                 slot.dataset.id = item.id;
                 slot.innerText = `🎯 ${item.desc}`;
 
-                // Drag & Drop Listeners
+                // Drag & Drop Events
                 slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('hovered'); });
                 slot.addEventListener('dragleave', () => slot.classList.remove('hovered'));
                 slot.addEventListener('drop', (e) => {
@@ -437,7 +456,7 @@
                     checkPlacement(pieceId, slot);
                 });
 
-                // Tap/Click Listener (For Mobile)
+                // Tap / Click Event (สำหรับมือถือ/แท็บเล็ต)
                 slot.addEventListener('click', () => {
                     if (selectedPieceId) {
                         checkPlacement(selectedPieceId, slot);
@@ -447,7 +466,7 @@
                 container.appendChild(slot);
             });
 
-            // Render Bottom Pieces Drawer Tray
+            // สร้างการ์ดชิ้นส่วนด้านล่าง
             const tray = document.getElementById('pieces-tray');
             tray.innerHTML = '';
             
@@ -525,35 +544,13 @@
         }
 
         function generateSVG(type) {
-            // Cute Anatomy Diagrams in SVG format
-            if (type === 'hierarchy') {
+            if (type === 'sarcomere') {
                 return `
                 <svg class="diagram-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="mGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ff85a1" />
-                            <stop offset="100%" stop-color="#ff4d6d" />
-                        </linearGradient>
-                    </defs>
-                    <!-- Whole Muscle -->
-                    <path d="M 50 140 Q 150 70 250 140 Q 150 210 50 140 Z" fill="url(#mGrad)" opacity="0.8"/>
-                    <!-- Fascicle Cylinder -->
-                    <rect x="180" y="120" width="110" height="40" rx="10" fill="#e0aaff" opacity="0.9"/>
-                    <!-- Fiber -->
-                    <rect x="250" y="130" width="80" height="20" rx="6" fill="#c77dff"/>
-                    <!-- Myofibril -->
-                    <line x1="310" y1="140" x2="380" y2="140" stroke="#7b2cbf" stroke-width="6" stroke-dasharray="4"/>
-                </svg>`;
-            } else if (type === 'sarcomere') {
-                return `
-                <svg class="diagram-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Z Discs -->
                     <line x1="50" y1="50" x2="50" y2="250" stroke="#7b2cbf" stroke-width="8" stroke-dasharray="8"/>
                     <line x1="350" y1="50" x2="350" y2="250" stroke="#7b2cbf" stroke-width="8" stroke-dasharray="8"/>
-                    <!-- Thick Filaments (Myosin) -->
                     <rect x="120" y="110" width="160" height="16" rx="8" fill="#ff4d6d"/>
                     <rect x="120" y="170" width="160" height="16" rx="8" fill="#ff4d6d"/>
-                    <!-- Thin Filaments (Actin) -->
                     <line x1="50" y1="90" x2="180" y2="90" stroke="#9d4edf" stroke-width="5"/>
                     <line x1="50" y1="210" x2="180" y2="210" stroke="#9d4edf" stroke-width="5"/>
                     <line x1="220" y1="90" x2="350" y2="90" stroke="#9d4edf" stroke-width="5"/>
@@ -562,14 +559,11 @@
             } else {
                 return `
                 <svg class="diagram-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Skeletal Cell -->
                     <rect x="40" y="40" width="140" height="40" rx="8" fill="#e0aaff" stroke="#9d4edf" stroke-width="2"/>
                     <circle cx="70" cy="50" r="5" fill="#7b2cbf"/>
                     <circle cx="120" cy="50" r="5" fill="#7b2cbf"/>
-                    <!-- Cardiac Cell -->
                     <path d="M 220 120 L 320 120 L 340 150 L 240 150 Z" fill="#ffb703" opacity="0.8" stroke="#fb8500" stroke-width="2"/>
                     <line x1="270" y1="120" x2="270" y2="150" stroke="#d4a373" stroke-width="4"/>
-                    <!-- Smooth Cell -->
                     <path d="M 40 230 Q 110 200 180 230 Q 110 260 40 230 Z" fill="#ff85a1" stroke="#ff4d6d" stroke-width="2"/>
                     <circle cx="110" cy="230" r="6" fill="#c77dff"/>
                 </svg>`;
@@ -596,7 +590,6 @@
             loadStage(0);
         }
 
-        // Initialize Game
         startTimer();
         loadStage(0);
     </script>
